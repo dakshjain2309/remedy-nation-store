@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 import { useParams, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils';
-import { useDemoProductsStore } from '@/lib/store/demo-products';
+import { useCatalog } from '@/lib/store/use-catalog';
 import ProductVariantSelectorMinimal from '@/components/storefront/ProductVariantSelectorMinimal';
 
 export default function ProductPage() {
   const params = useParams();
   const slug = params.slug as string;
   const [mounted, setMounted] = useState(false);
-  const products = useDemoProductsStore((state) => state.products);
+  const { products, loading, error } = useCatalog();
 
   useEffect(() => {
     setMounted(true);
@@ -19,7 +19,7 @@ export default function ProductPage() {
 
   const product = products.find(p => p.slug === slug && p.is_active);
 
-  if (!mounted) {
+  if (!mounted || loading) {
     return (
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -33,6 +33,8 @@ export default function ProductPage() {
       </main>
     );
   }
+
+  if (error) return <main className="max-w-6xl mx-auto px-4 py-8 text-center" role="alert">{error}</main>;
 
   if (!product) {
     return (

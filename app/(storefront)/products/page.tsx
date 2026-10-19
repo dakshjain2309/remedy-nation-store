@@ -4,14 +4,13 @@ import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { formatPrice } from '@/lib/utils';
-import { useDemoProductsStore } from '@/lib/store/demo-products';
+import { useCatalog } from '@/lib/store/use-catalog';
 import AddToCartMinimal from '@/components/storefront/AddToCartMinimal';
 
 function ProductsContent() {
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
-  const products = useDemoProductsStore((state) => state.products);
-  const categories = useDemoProductsStore((state) => state.categories);
+  const { products, categories, loading, error } = useCatalog();
 
   const categorySlug = searchParams.get('category');
   const searchQuery = searchParams.get('search');
@@ -50,7 +49,7 @@ function ProductsContent() {
 
   const currentCategory = categories.find((c) => c.slug === categorySlug);
 
-  if (!mounted) {
+  if (!mounted || loading) {
     return (
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="h-8 bg-gray-200 rounded w-48 mb-6" />
@@ -66,6 +65,8 @@ function ProductsContent() {
       </main>
     );
   }
+
+  if (error) return <main className="max-w-6xl mx-auto px-4 py-8 text-center" role="alert">{error}</main>;
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">

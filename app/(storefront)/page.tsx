@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils';
-import { useDemoProductsStore } from '@/lib/store/demo-products';
+import { useCatalog } from '@/lib/store/use-catalog';
 import AddToCartMinimal from '@/components/storefront/AddToCartMinimal';
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
-  const products = useDemoProductsStore((state) => state.products);
+  const { products, loading, error } = useCatalog();
 
   useEffect(() => {
     setMounted(true);
@@ -16,7 +16,7 @@ export default function HomePage() {
 
   const activeProducts = products.filter(p => p.is_active);
 
-  if (!mounted) {
+  if (!mounted || loading) {
     return (
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -31,6 +31,8 @@ export default function HomePage() {
       </main>
     );
   }
+
+  if (error) return <main className="max-w-6xl mx-auto px-4 py-8 text-center" role="alert">{error}</main>;
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
