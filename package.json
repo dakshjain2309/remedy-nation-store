@@ -36,6 +36,8 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@opennextjs/cloudflare": "^1.0.0",
+    "wrangler": "^4.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/uuid": "^10.0.0",
