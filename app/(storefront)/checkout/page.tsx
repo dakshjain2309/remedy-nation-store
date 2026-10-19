@@ -155,7 +155,7 @@ export default function CheckoutPage() {
             {[
               { id: 'card', label: 'Credit card' },
               { id: 'paypal', label: 'PayPal' },
-              { id: 'cod', label: 'Cash on delivery (+$3)' },
+              { id: 'cod', label: 'Cash on delivery (+₹50)' },
             ].map((opt) => (
               <label
                 key={opt.id}
