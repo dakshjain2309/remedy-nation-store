@@ -29,8 +29,8 @@ export const useDemoSettingsStore = create<DemoSettingsState>()(
     (set) => ({
       store: {
         name: 'Next Store',
-        currency: 'USD',
-        currencySymbol: '$',
+        currency: 'INR',
+        currencySymbol: '₹',
         taxRate: 0,
         freeShippingThreshold: 50,
       },

@@ -1,7 +1,7 @@
 export function formatPrice(
   price: number,
-  currency: string = 'USD',
-  locale: string = 'en-US'
+  currency: string = 'INR',
+  locale: string = 'en-IN'
 ): string {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -34,7 +34,7 @@ export function formatDateTime(
 }
 
 export function formatOrderNumber(orderNumber: string): string {
-  return `#${orderNumber}`;
+  return `#₹{orderNumber}`;
 }
 
 export function truncate(text: string, length: number): string {

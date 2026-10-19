@@ -311,5 +311,5 @@ INSERT INTO shipping_methods (name, description, price, estimated_days_min, esti
 
 -- Insert default store settings
 INSERT INTO store_settings (key, value) VALUES
-  ('general', '{"name": "Next Store", "currency": "EUR", "currencySymbol": "€", "taxRate": 22, "freeShippingThreshold": 50}'),
+  ('general', '{"name": "Next Store", "currency": "EUR", "currencySymbol": "₹", "taxRate": 22, "freeShippingThreshold": 50}'),
   ('payments', '{"stripe": true, "paypal": true, "cod": true}');
