@@ -20,8 +20,14 @@ jobs:
         with:
           node-version: '22'
           
-          - name: Update package-lock.json
-  run: npm install --package-lock-only --ignore-scripts
+      - name: Check package versions
+        run: |
+          echo "Commit being used:"
+          git rev-parse HEAD
+          echo "Next.js version:"
+          node -p "require('./package.json').dependencies.next"
+          echo "OpenNext version:"
+          node -p "require('./package.json').devDependencies['@opennextjs/cloudflare']"
 
       - name: Update package-lock.json
         run: npm install --package-lock-only --ignore-scripts
