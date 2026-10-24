@@ -19,6 +19,38 @@ export async function POST(request: NextRequest) {
     if (!url.startsWith('https://') || !secret || secret.includes('placeholder')) {
       return NextResponse.json({ error: 'Checkout is not configured' }, { status: 503 });
     }
+    
+    // Limit repeated checkout requests per visitor.
+const limiter = env.COD_RATE_LIMITER as
+  | { limit: (options: { key: string }) => Promise<{ success: boolean }> }
+  | undefined;
+
+if (!limiter) {
+  return NextResponse.json(
+    { error: 'Checkout protection is not configured' },
+    { status: 503 }
+  );
+}
+
+const visitorIP = request.headers.get('cf-connecting-ip');
+
+if (!visitorIP) {
+  return NextResponse.json(
+    { error: 'Unable to verify checkout request' },
+    { status: 403 }
+  );
+}
+
+const { success } = await limiter.limit({
+  key: `cod:${visitorIP}`,
+});
+
+if (!success) {
+  return NextResponse.json(
+    { error: 'Too many checkout attempts. Please try again shortly.' },
+    { status: 429 }
+  );
+}
     const body = await request.json();
     const customer = body?.customer;
     const items = body?.items;
