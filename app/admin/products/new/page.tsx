@@ -105,6 +105,7 @@ export default async function NewProductPage() {
     boxSizing: 'border-box' as const,
   };
 
+  
   return (
     <main style={{ maxWidth: 720, margin: '0 auto', padding: 32 }}>
       <Link href="/admin/products">← Back to Products</Link>
@@ -112,89 +113,8 @@ export default async function NewProductPage() {
       <h1>Add New Product</h1>
       <p>Enter the details of your Remedy Nation product.</p>
 
-      
-    <NewProductForm createProduct={addProduct} />
-        <label htmlFor="name">Product Name *</label>
-        <input
-          id="name"
-          name="name"
-          required
-          maxLength={200}
-          style={inputStyle}
-        />
-
-        <label htmlFor="slug">Product URL Slug *</label>
-        <input
-          id="slug"
-          name="slug"
-          required
-          pattern="[a-z0-9]+(-[a-z0-9]+)*"
-          placeholder="brass-vastu-deer"
-          style={inputStyle}
-        />
-
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          rows={5}
-          style={inputStyle}
-        />
-
-        <label htmlFor="sku">SKU / Product Code</label>
-        <input id="sku" name="sku" style={inputStyle} />
-
-        <label htmlFor="price">Selling Price (₹) *</label>
-        <input
-          id="price"
-          name="price"
-          type="number"
-          min="0"
-          step="0.01"
-          required
-          style={inputStyle}
-        />
-
-        <label htmlFor="stock_quantity">Stock Quantity *</label>
-        <input
-          id="stock_quantity"
-          name="stock_quantity"
-          type="number"
-          min="0"
-          step="1"
-          required
-          style={inputStyle}
-        />
-
-        <label style={{ display: 'block', marginBottom: 14 }}>
-          <input
-            type="checkbox"
-            name="is_active"
-            defaultChecked
-          />{' '}
-          Active — Show product on website
-        </label>
-
-        <label style={{ display: 'block', marginBottom: 24 }}>
-          <input type="checkbox" name="is_featured" />{' '}
-          Featured Product
-        </label>
-        <ProductImageUpload />
-
-        <button
-          type="submit"
-          style={{
-            padding: '14px 24px',
-            background: '#222',
-            color: '#fff',
-            border: 0,
-            borderRadius: 8,
-            cursor: 'pointer',
-          }}
-        >
-          Save Product
-        </button>
-      </form>
+      <NewProductForm createProduct={addProduct} />
     </main>
   );
 }
+
