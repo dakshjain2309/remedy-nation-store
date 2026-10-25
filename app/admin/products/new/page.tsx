@@ -107,6 +107,7 @@ export default async function NewProductPage() {
 
   
  
+  
   return (
     <main style={{ maxWidth: 720, margin: '0 auto', padding: 32 }}>
       <Link href="/admin/products">← Back to Products</Link>
@@ -118,4 +119,5 @@ export default async function NewProductPage() {
     </main>
   );
 }
+
 
