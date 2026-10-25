@@ -78,7 +78,15 @@ export default async function AdminProductsPage() {
             </thead>
 
             <tbody>
-              {products.map((product) => (
+              {products.map((product: {
+  id: string;
+  name: string;
+  sku: string | null;
+  price: number;
+  stock_quantity: number;
+  is_active: boolean;
+  is_featured: boolean;
+}) => (
                 <tr key={product.id}>
                   <td style={{ padding: 12 }}>{product.name}</td>
                   <td style={{ padding: 12 }}>{product.sku || '—'}</td>
