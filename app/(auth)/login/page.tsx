@@ -40,8 +40,7 @@ function LoginForm() {
 
       if (error) throw error;
 
-      router.push(redirect);
-      router.refresh();
+      rwindow.location.assign(redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/');
     } catch (err: any) {
       setError(err.message || 'Unable to sign in');
     } finally {
