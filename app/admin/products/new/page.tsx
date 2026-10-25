@@ -71,7 +71,7 @@ export default async function NewProductPage() {
       throw new Error('Please enter valid product details');
     }
 
-    const { error } = await supabase.from('products').insert({
+    const { data: product, error } = await supabase.from('products').insert({
       name,
       slug,
       description: description || null,
@@ -82,13 +82,18 @@ export default async function NewProductPage() {
       is_active: formData.get('is_active') === 'on',
       is_featured: formData.get('is_featured') === 'on',
     });
+    .select('id')
+  .single();
 
-    if (error) {
+        if (error) {
       throw new Error('Unable to save product: ' + error.message);
     }
 
-    redirect('/admin/products');
-  }
+    if (!product?.id) {
+      throw new Error('Product was created but its ID was not returned.');
+    }
+
+    return { productId: product.id };
 
   const inputStyle = {
     width: '100%',
