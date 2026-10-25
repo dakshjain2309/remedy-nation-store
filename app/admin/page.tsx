@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminProductsPage() {
+export default async function AdminDashboard() {
   const supabase = await createClient();
 
   const {
@@ -14,7 +14,7 @@ export default async function AdminProductsPage() {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    redirect('/login?redirect=/admin/products');
+    redirect('/login?redirect=/admin');
   }
 
   const { data: isAdmin, error: adminError } =
@@ -24,90 +24,58 @@ export default async function AdminProductsPage() {
     redirect('/');
   }
 
-  const { data: products, error: productsError } = await supabase
-    .from('products')
-    .select(
-      'id, name, sku, price, stock_quantity, is_active, is_featured'
-    )
-    .order('created_at', { ascending: false });
-
   return (
-    <main style={{ padding: '32px', maxWidth: 1200, margin: '0 auto' }}>
-      <Link href="/admin">← Back to Dashboard</Link>
+    <main style={{ maxWidth: 1200, margin: '0 auto', padding: 32 }}>
+      <h1>Remedy Nation Admin Dashboard</h1>
+      <p>Welcome to your store management dashboard.</p>
 
-      <h1>Product Management</h1>
-      <p>Manage your Remedy Nation product catalogue.</p>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: 20,
+          marginTop: 32,
+        }}
+      >
+        <Link
+          href="/admin/products"
+          style={{
+            padding: 24,
+            border: '1px solid #ddd',
+            borderRadius: 12,
+            textDecoration: 'none',
+            color: 'inherit',
+          }}
+        >
+          <h2>Products</h2>
+          <p>View products, prices, and availability.</p>
+          <strong>Manage Products →</strong>
+        </Link>
 
-      {productsError ? (
-        <p role="alert">
-          Unable to load products: {productsError.message}
-        </p>
-      ) : !products?.length ? (
-        <p>No products found. We'll add the product creation form next.</p>
-      ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              marginTop: 24,
-              textAlign: 'left',
-            }}
-          >
-            <thead>
-              <tr>
-                {[
-                  'Product',
-                  'SKU',
-                  'Price',
-                  'Stock',
-                  'Status',
-                  'Featured',
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    style={{
-                      padding: 12,
-                      borderBottom: '2px solid #ddd',
-                    }}
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {products.map((product: {
-  id: string;
-  name: string;
-  sku: string | null;
-  price: number;
-  stock_quantity: number;
-  is_active: boolean;
-  is_featured: boolean;
-}) => (
-                <tr key={product.id}>
-                  <td style={{ padding: 12 }}>{product.name}</td>
-                  <td style={{ padding: 12 }}>{product.sku || '—'}</td>
-                  <td style={{ padding: 12 }}>
-                    ₹{Number(product.price).toLocaleString('en-IN')}
-                  </td>
-                  <td style={{ padding: 12 }}>
-                    {product.stock_quantity}
-                  </td>
-                  <td style={{ padding: 12 }}>
-                    {product.is_active ? 'Active' : 'Hidden'}
-                  </td>
-                  <td style={{ padding: 12 }}>
-                    {product.is_featured ? 'Yes' : 'No'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div
+          style={{
+            padding: 24,
+            border: '1px solid #ddd',
+            borderRadius: 12,
+          }}
+        >
+          <h2>Orders</h2>
+          <p>View and manage customer orders.</p>
+          <span>Coming Soon</span>
         </div>
-      )}
+
+        <div
+          style={{
+            padding: 24,
+            border: '1px solid #ddd',
+            borderRadius: 12,
+          }}
+        >
+          <h2>Inventory</h2>
+          <p>Monitor stock quantities and availability.</p>
+          <span>Coming Soon</span>
+        </div>
+      </div>
     </main>
   );
 }
