@@ -53,8 +53,38 @@ export default async function AdminProductsPage() {
     >
       <Link href="/admin">← Back to Dashboard</Link>
 
-      <h1>Product Management</h1>
-      <p>Manage your Remedy Nation product catalogue.</p>
+      
+<div
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 16,
+    marginBottom: 24,
+  }}
+>
+  <div>
+    <h1>Product Management</h1>
+    <p>Manage your Remedy Nation product catalogue.</p>
+  </div>
+
+  <Link
+    href="/admin/products/new"
+    style={{
+      display: 'inline-block',
+      backgroundColor: '#222',
+      color: '#fff',
+      padding: '12px 22px',
+      borderRadius: 8,
+      textDecoration: 'none',
+      fontWeight: 600,
+    }}
+  >
+    + Add Product
+  </Link>
+</div>
+
 
       {error ? (
         <p role="alert">
