@@ -43,7 +43,7 @@ function LoginForm() {
       router.push(redirect);
       router.refresh();
     } catch (err: any) {
-      setError(err.message || 'Errore durante il login');
+      setError(err.message || 'Unable to sign in');
     } finally {
       setLoading(false);
     }
@@ -59,15 +59,15 @@ function LoginForm() {
             href="/"
             sx={{ textDecoration: 'none', color: 'primary.main', fontWeight: 700 }}
           >
-            Next Store
+            Remedy Nation
           </Typography>
         </Box>
 
         <Typography variant="h5" gutterBottom>
-          Accedi
+          Sign In
         </Typography>
         <Typography color="text.secondary" sx={{ mb: 3 }}>
-          Inserisci le tue credenziali per accedere
+          Enter your credentials to sign in
         </Typography>
 
         {error && (
@@ -105,30 +105,30 @@ function LoginForm() {
             disabled={loading}
             startIcon={loading && <CircularProgress size={20} />}
           >
-            {loading ? 'Accesso...' : 'Accedi'}
+            {loading ? 'Signing In...' : 'Sign In'}
           </Button>
         </form>
 
         <Box sx={{ textAlign: 'center', mt: 2 }}>
           <Link href="/forgot-password">
             <Typography variant="body2" color="primary">
-              Password dimenticata?
+              Forgot Password?
             </Typography>
           </Link>
         </Box>
 
         <Divider sx={{ my: 3 }}>
           <Typography variant="body2" color="text.secondary">
-            oppure
+            or
           </Typography>
         </Divider>
 
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            Non hai un account?{' '}
+            Don't have an account?{' '}
             <Link href="/register">
               <Typography component="span" color="primary" sx={{ cursor: 'pointer' }}>
-                Registrati
+                Register
               </Typography>
             </Link>
           </Typography>
