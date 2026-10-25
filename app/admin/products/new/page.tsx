@@ -2,6 +2,8 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import ProductImageUpload from './ProductImageUpload';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -171,6 +173,7 @@ export default async function NewProductPage() {
           <input type="checkbox" name="is_featured" />{' '}
           Featured Product
         </label>
+        <ProductImageUpload />
 
         <button
           type="submit"
