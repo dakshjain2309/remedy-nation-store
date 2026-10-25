@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import ProductImageUpload from './ProductImageUpload';
+import NewProductForm from './NewProductForm';
 
 
 export const dynamic = 'force-dynamic';
@@ -112,7 +112,8 @@ export default async function NewProductPage() {
       <h1>Add New Product</h1>
       <p>Enter the details of your Remedy Nation product.</p>
 
-      <form action={addProduct}>
+      
+    <NewProductForm createProduct={addProduct} />
         <label htmlFor="name">Product Name *</label>
         <input
           id="name"
