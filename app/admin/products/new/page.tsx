@@ -4,7 +4,6 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import NewProductForm from './NewProductForm';
 
-
 export const dynamic = 'force-dynamic';
 
 export default async function NewProductPage() {
@@ -71,53 +70,49 @@ export default async function NewProductPage() {
       throw new Error('Please enter valid product details');
     }
 
-    const { data: product, error } = await supabase.from('products').insert({
-      name,
-      slug,
-      description: description || null,
-      sku: sku || null,
-      price,
-      stock_quantity: stock,
-      type: 'physical',
-      is_active: formData.get('is_active') === 'on',
-      is_featured: formData.get('is_featured') === 'on',
-    })
-    .select('id')
-    .single();
+    const { data: product, error } = await supabase
+      .from('products')
+      .insert({
+        name,
+        slug,
+        description: description || null,
+        sku: sku || null,
+        price,
+        stock_quantity: stock,
+        type: 'physical',
+        is_active: formData.get('is_active') === 'on',
+        is_featured: formData.get('is_featured') === 'on',
+      })
+      .select('id')
+      .single();
 
-        if (error) {
-      throw new Error('Unable to save product: ' + error.message);
+    if (error) {
+      throw new Error(
+        'Unable to save product: ' + error.message
+      );
     }
 
     if (!product?.id) {
-      throw new Error('Product was created but its ID was not returned.');
+      throw new Error(
+        'Product was created but its ID was not returned.'
+      );
     }
 
     return { productId: product.id };
+  }
 
-  const inputStyle = {
-    width: '100%',
-    padding: 12,
-    border: '1px solid #ccc',
-    borderRadius: 8,
-    marginTop: 6,
-    marginBottom: 18,
-    boxSizing: 'border-box' as const,
-  };
-
-  
- 
-  
   return (
     <main style={{ maxWidth: 720, margin: '0 auto', padding: 32 }}>
-      <Link href="/admin/products">← Back to Products</Link>
+      <Link href="/admin/products">
+        ← Back to Products
+      </Link>
 
       <h1>Add New Product</h1>
-      <p>Enter the details of your Remedy Nation product.</p>
+      <p>
+        Enter the details of your Remedy Nation product.
+      </p>
 
       <NewProductForm createProduct={addProduct} />
     </main>
   );
-}
-
-
+}  
