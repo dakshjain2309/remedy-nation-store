@@ -169,15 +169,59 @@ export default function CheckoutPage() {
         </section>
 
         {/* Payment */}
-        <section>
-          <h2 className="text-sm font-medium text-gray-700 mb-3">Payment</h2>
-          <div className="space-y-2">
-            <label className="flex items-center p-3 border border-black bg-gray-50 rounded-lg">
-              <input type="radio" name="payment" checked readOnly className="mr-3" />
-              <span className="text-sm">Cash on delivery (+₹50)</span>
-            </label>
-          </div>
-        </section>
+        
+{/* Payment */}
+<section>
+  <h2 className="text-sm font-medium text-gray-700 mb-3">
+    Payment
+  </h2>
+
+  <div className="space-y-3">
+    {/* Cash on Delivery */}
+    <label className="flex items-center p-3 border border-black bg-gray-50 rounded-lg">
+      <input
+        type="radio"
+        name="payment"
+        value="cod"
+        checked
+        readOnly
+        className="mr-3"
+      />
+      <span className="text-sm">
+        Cash on Delivery (+₹50)
+      </span>
+    </label>
+
+    {/* PhonePe — Coming Soon */}
+    <div
+      className="flex items-center justify-between p-3 border border-gray-200 bg-gray-50 rounded-lg opacity-60"
+      aria-label="PhonePe payments coming soon"
+    >
+      <div className="flex items-center">
+        <input
+          type="radio"
+          name="payment"
+          value="phonepe"
+          disabled
+          className="mr-3"
+        />
+        <div>
+          <p className="text-sm font-medium">
+            PhonePe
+          </p>
+          <p className="text-xs text-gray-500">
+            UPI, Debit Card, Credit Card & Net Banking
+          </p>
+        </div>
+      </div>
+
+      <span className="text-xs font-medium bg-gray-200 px-2 py-1 rounded-full">
+        Coming Soon
+      </span>
+    </div>
+  </div>
+</section>
+
 
         {/* Summary */}
         <section className="border-t border-gray-100 pt-6">
