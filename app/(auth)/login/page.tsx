@@ -40,7 +40,7 @@ function LoginForm() {
 
       if (error) throw error;
 
-      rwindow.location.assign(redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/');
+      window.location.assign(redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/');
     } catch (err: any) {
       setError(err.message || 'Unable to sign in');
     } finally {
