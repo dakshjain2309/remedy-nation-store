@@ -81,9 +81,9 @@ export default async function NewProductPage() {
       type: 'physical',
       is_active: formData.get('is_active') === 'on',
       is_featured: formData.get('is_featured') === 'on',
-    });
+    })
     .select('id')
-  .single();
+    .single();
 
         if (error) {
       throw new Error('Unable to save product: ' + error.message);
