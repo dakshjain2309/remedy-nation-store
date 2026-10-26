@@ -3,7 +3,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { uploadProductImage } from '../actions';
 import ProductImageUpload from './ProductImageUpload';
 
 type Props = {
@@ -28,6 +28,7 @@ export default function NewProductForm({ createProduct }: Props) {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    let productWasCreated = false;
 
     try {
       const files = formData.getAll('product_images').filter(
@@ -51,56 +52,24 @@ export default function NewProductForm({ createProduct }: Props) {
       formData.delete('product_images');
 
       const { productId } = await createProduct(formData);
-      const supabase = createClient();
+      productWasCreated = true;
 
       for (let index = 0; index < files.length; index++) {
         setStatus(`Uploading image ${index + 1} of ${files.length}...`);
-
-        const file = files[index];
-        const extension = file.type === 'image/png'
-          ? 'png'
-          : file.type === 'image/webp'
-            ? 'webp'
-            : 'jpg';
-
-        const path = `${productId}/${crypto.randomUUID()}.${extension}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('product-images')
-          .upload(path, file, {
-            contentType: file.type,
-            upsert: false,
-          });
-
-        if (uploadError) {
-          throw new Error(`Image ${index + 1}: ${uploadError.message}`);
-        }
-
-        const { data: publicUrl } = supabase.storage
-          .from('product-images')
-          .getPublicUrl(path);
-
-        const { error: imageError } = await supabase
-          .from('product_images')
-          .insert({
-            product_id: productId,
-            url: publicUrl.publicUrl,
-            alt_text: String(formData.get('name') || ''),
-            position: index,
-          });
-
-        if (imageError) {
-          // Remove this file if its database record could not be saved.
-          await supabase.storage.from('product-images').remove([path]);
-          throw new Error(`Image ${index + 1}: ${imageError.message}`);
-        }
+        const imageFormData = new FormData();
+        imageFormData.set('product_id', productId);
+        imageFormData.set('image', files[index]);
+        await uploadProductImage(imageFormData);
       }
 
       setStatus('Product saved successfully.');
       router.push('/admin/products');
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to save product.');
+      const message = err instanceof Error ? err.message : 'Unable to save product.';
+      setError(productWasCreated
+        ? `Product was created, but image upload was incomplete: ${message} Open the product editor to retry.`
+        : message);
       setStatus('');
     } finally {
       setSaving(false);

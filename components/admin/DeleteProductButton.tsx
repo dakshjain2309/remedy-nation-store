@@ -10,9 +10,10 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Alert,
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import { createClient } from '@/lib/supabase/client';
+import { deleteOrArchiveProduct } from '@/app/admin/products/actions';
 
 interface DeleteProductButtonProps {
   productId: string;
@@ -26,24 +27,30 @@ export default function DeleteProductButton({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleDelete = async () => {
     setLoading(true);
+    setError('');
     try {
-      const supabase = createClient();
-      await supabase.from('products').delete().eq('id', productId);
+      const result = await deleteOrArchiveProduct(productId);
+      setOpen(false);
       router.refresh();
-    } catch (error) {
-      console.error('Error deleting product:', error);
+      if (result.warning) {
+        window.alert(result.warning);
+      } else if (result.result === 'archived') {
+        window.alert('This product has order history, so it was archived instead of permanently deleted.');
+      }
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Unable to remove product.');
     } finally {
       setLoading(false);
-      setOpen(false);
     }
   };
 
   return (
     <>
-      <IconButton size="small" color="error" onClick={() => setOpen(true)}>
+      <IconButton size="small" color="error" onClick={() => { setError(''); setOpen(true); }}>
         <DeleteIcon />
       </IconButton>
 
@@ -51,8 +58,9 @@ export default function DeleteProductButton({
         <DialogTitle>Elimina Prodotto</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Sei sicuro di voler eliminare "{productName}"? Questa azione non può essere annullata.
+            Remove “{productName}”? Products referenced by orders will be archived to preserve order history.
           </DialogContentText>
+          {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Annulla</Button>
